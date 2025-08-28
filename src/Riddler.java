@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -75,26 +73,38 @@ public class Riddler {
 
     public String decryptFour(String encrypted) {
         String decrypted = "";
-        char[] charArr = encrypted.toCharArray();
-        // Used when trying to decipher to visualize array numerically
-        // All values were really large, so i found the minimum and subtracted it, and then added 96 (the min ascii char val for a)
-        List<Integer> numList = new ArrayList<>();
-        for (char c : charArr){numList.add((int) c);}
-        // Find min (only need to do once) -> got 9951
-        // System.out.println(Collections.min(numList));
-        final int MIN = 9951;
-        // For each number subtract the minimum
-        // Convert it to lowercase IF it is a letter
-        // For spaces, hyphens, commas, and capital letters there is a different cipher
-        // It is shifted over an additional 32
-        // This was found by googling the poem based on the lowercase and trying to get "," to "L"
-        final int SPECIAL_CHAR_SHIFT = 32;
-        for(int num : numList){
-            char newChar = (char) (num - MIN);
-            if(Character.isLetter(newChar)){decrypted += Character.toLowerCase(newChar);}
-            else{decrypted += (char) (newChar + SPECIAL_CHAR_SHIFT);}
+        // Earlier version was really verbose code
+        // bcuz i think i was converting to ascii wrong...
+        // So I ended up having to do an unnecessary extra shift
+        // Fixed version
+        int i = 0;
+        int num = 0;
+        int letter = 0;
+        // Difference found by calculating min value
+        int difference = 9919;
+        while(i < encrypted.length()){
+            // Char to ascii int conversion
+            num = encrypted.charAt(i);
+            // Dingbat to letter shift
+            letter = num - difference;
+            // Add fixed char
+            decrypted += (char) letter;
+            i++;
         }
-        System.out.println("4. " + decrypted + "\n");
+        System.out.println("4. "+ decrypted);
+        return decrypted;
+    }
+
+    public String decryptFive(String encrypted){
+        String decrypted = "";
+        char[] charArr = encrypted.toCharArray();
+        List<Integer> letterNumList = new ArrayList<>();
+        for (int i = 0; i < charArr.length; i+=3){
+            letterNumList.add(charArr[i] + charArr[i+1]);
+            decrypted += (char) ((int) charArr[i] + charArr[i+1] - 51);
+        }
+
+        System.out.println("5. " + decrypted);
         return decrypted;
     }
 }

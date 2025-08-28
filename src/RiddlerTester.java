@@ -30,6 +30,12 @@ public class RiddlerTester {
         solver.decryptFour(encrypted);
     }
 
+    @Test
+    public void testFive() {
+        setTestData("5");
+        solver.decryptFive(encrypted);
+    }
+
     private void setTestData(String text) {
         // Open files
         try {
